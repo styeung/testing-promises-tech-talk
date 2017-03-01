@@ -13,3 +13,4 @@ class PromiseTester {
   }
 }
 
+export default PromiseTester;

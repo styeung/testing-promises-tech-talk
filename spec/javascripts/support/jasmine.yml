@@ -11,8 +11,7 @@
 #   - 'dist/**/*.js'
 #
 src_files:
-  - public/javascripts/**/*.js
-  - node_modules/lodash/lodash.min.js
+  - build/bundle.js
 
 # stylesheets
 #
@@ -52,7 +51,7 @@ helpers:
 #   - '**/*[sS]pec.js'
 #
 spec_files:
-  - '**/*[sS]pec.js'
+  - 'build/bundle.js'
 
 # src_dir
 #
@@ -74,7 +73,7 @@ src_dir:
 #
 # spec_dir: spec/javascripts
 #
-spec_dir:
+spec_dir: 'test'
 
 # spec_helper
 #
@@ -133,4 +132,5 @@ boot_files:
 # random: true
 #
 random:
+
 
