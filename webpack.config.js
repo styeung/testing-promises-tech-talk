@@ -11,7 +11,7 @@ module.exports = {
      publicPath: '/assets',
      filename: '[name].js',
      libraryTarget: 'var',
-     library: 'Todo',
+     library: 'PromiseTester',
   },
   resolve: {
     modules: [
