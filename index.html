@@ -8,7 +8,10 @@
     <script>
       var promiseTester = new PromiseTester.PromiseTester(window);
 
-      promiseTester.fetchItem();
+      promiseTester.fetchItem().then((response) => {
+        var itemNode = document.getElementById('item-content');
+        itemNode.innerHTML = response.data.content;
+      });
     </script>
   </body>
 </html>
