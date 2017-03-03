@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import PromiseTester from './promise_tester.js'
+import ItemFetcher from './item_fetcher'
 
 module.exports = {
   _,
-  PromiseTester
+  ItemFetcher
 };

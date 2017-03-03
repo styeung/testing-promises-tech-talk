@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Q from 'q';
 import axios from 'axios';
-import PromiseTester from '../app/promise_tester.js';
+import ItemFetcher from '../app/item_fetcher';
 
 describe('Testing Promises', () => {
   it('can test chaining promises using Q', (done) => {
@@ -10,19 +10,19 @@ describe('Testing Promises', () => {
 
     spyOn(axios, 'get').and.returnValues(idDeferred.promise, itemDeferred.promise);
 
-    const promiseTester = new PromiseTester();
+    const itemFetcher = new ItemFetcher();
 
-    promiseTester.fetchItem();
+    itemFetcher.fetchItem();
 
-    expect(promiseTester.status).toEqual('unstarted');
+    expect(itemFetcher.status).toEqual('unstarted');
 
     idDeferred.resolve({data: {id: '1'}});
 
     setTimeout(() => {
-      expect(promiseTester.status).toEqual('pending');
+      expect(itemFetcher.status).toEqual('pending');
       itemDeferred.resolve({data: {id: '1', content: 'boom'}});
       setTimeout(() => {
-        expect(promiseTester.status).toEqual('finished');
+        expect(itemFetcher.status).toEqual('finished');
         done();
       }, 0);
     }, 0);
@@ -37,19 +37,19 @@ describe('Testing Promises', () => {
 
     spyOn(axios, 'get').and.returnValues(idDeferred, itemDeferred);
 
-    const promiseTester = new PromiseTester();
+    const itemFetcher = new ItemFetcher();
 
-    promiseTester.fetchItem();
+    itemFetcher.fetchItem();
 
-    expect(promiseTester.status).toEqual('unstarted');
+    expect(itemFetcher.status).toEqual('unstarted');
 
     idPromiseHelper.resolve({data: {id: '1'}});
 
     setTimeout(() => {
-      expect(promiseTester.status).toEqual('pending');
+      expect(itemFetcher.status).toEqual('pending');
       itemPromiseHelper.resolve({data: {id: '1', content: 'boom'}});
       setTimeout(() => {
-        expect(promiseTester.status).toEqual('finished');
+        expect(itemFetcher.status).toEqual('finished');
         done();
       }, 0);
     }, 0);

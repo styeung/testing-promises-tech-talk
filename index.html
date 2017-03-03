@@ -6,9 +6,9 @@
   <body>
     <div id="item-content"></div>
     <script>
-      var promiseTester = new PromiseTester.PromiseTester(window);
+      var itemFetcher = new PromiseTester.ItemFetcher();
 
-      promiseTester.fetchItem().then((response) => {
+      itemFetcher.fetchItem().then((response) => {
         var itemNode = document.getElementById('item-content');
         itemNode.innerHTML = response.data.content;
       });
