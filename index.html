@@ -4,14 +4,18 @@
     <script type="text/javascript" src="assets/app/build/bundle.js"></script>
   </head>
   <body>
-    <div id="item-content"></div>
+    <span>Status: </span>
+    <span id="item-status"></span>
+    <br/>
+    <span>Content: </span>
+    <span id="item-content"></span>
     <script>
-      var itemFetcher = new PromiseTester.ItemFetcher();
+      var statusNode = document.getElementById('item-status');
+      var contentNode = document.getElementById('item-content');
+      var itemFetcher = new PromiseTester.ItemFetcher(statusNode, contentNode);
 
-      itemFetcher.fetchItem().then((response) => {
-        var itemNode = document.getElementById('item-content');
-        itemNode.innerHTML = response.data.content;
-      });
+      //itemFetcher.fetchId();
+      itemFetcher.fetchItem();
     </script>
   </body>
 </html>
