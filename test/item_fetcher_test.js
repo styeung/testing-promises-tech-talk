@@ -12,75 +12,81 @@ describe('Testing Promises', () => {
     fakeContentNode = {};
   });
 
-  xit('fails if you do not understand how JS works', () => {
-    const idDeferred = Q.defer();
-    const itemDeferred = Q.defer();
+  describe('.fetchId', () => {
+    xit('fails if you do not understand how JS works', () => {
+      // stub out the api requests
+      const idDeferred = Q.defer();
+      const itemDeferred = Q.defer();
 
-    spyOn(axios, 'get').and.returnValues(idDeferred.promise, itemDeferred.promise);
+      spyOn(axios, 'get').and.returnValues(idDeferred.promise, itemDeferred.promise);
 
-    const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
+      // invoke fetch id
+      const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
 
-    itemFetcher.fetchItem();
+      itemFetcher.fetchId();
 
-    expect(itemFetcher.status).toEqual('unstarted');
+      // assert that status is still unstarted before promise has resolved
+      expect(itemFetcher.status).toEqual('unstarted');
 
-    idDeferred.resolve({data: {id: '1'}});
+      // resolve the promise
+      idDeferred.resolve({data: {id: '1'}});
 
-    expect(itemFetcher.status).toEqual('pending');
-
-    itemDeferred.resolve({data: {id: '1', content: 'boom'}});
-
-    expect(itemFetcher.status).toEqual('finished');
+      // assert that status is finished...
+      // ...but this fails!
+      expect(itemFetcher.status).toEqual('finished');
+    });
   });
 
-  it('can test chaining promises using Q', (done) => {
-    const idDeferred = Q.defer();
-    const itemDeferred = Q.defer();
+  describe('.fetchItem', () => {
+    it('can test chaining promises using Q', (done) => {
+      const idDeferred = Q.defer();
+      const itemDeferred = Q.defer();
 
-    spyOn(axios, 'get').and.returnValues(idDeferred.promise, itemDeferred.promise);
+      spyOn(axios, 'get').and.returnValues(idDeferred.promise, itemDeferred.promise);
 
-    const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
+      const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
 
-    itemFetcher.fetchItem();
+      itemFetcher.fetchItem();
 
-    expect(itemFetcher.status).toEqual('unstarted');
+      expect(itemFetcher.status).toEqual('unstarted');
 
-    idDeferred.resolve({data: {id: '1'}});
+      idDeferred.resolve({data: {id: '1'}});
 
-    setTimeout(() => {
-      expect(itemFetcher.status).toEqual('pending');
-      itemDeferred.resolve({data: {id: '1', content: 'boom'}});
       setTimeout(() => {
-        expect(itemFetcher.status).toEqual('finished');
-        done();
+        expect(itemFetcher.status).toEqual('pending');
+        itemDeferred.resolve({data: {id: '1', content: 'boom'}});
+        setTimeout(() => {
+          expect(itemFetcher.status).toEqual('finished');
+          done();
+        }, 0);
       }, 0);
-    }, 0);
-  });
+    });
 
-  it('can test chaining promises using a promise Helper', (done) => {
-    const idPromiseHelper = {};
-    const itemPromiseHelper = {};
+    it('can test chaining promises using a promise Helper', (done) => {
+      const idPromiseHelper = {};
+      const itemPromiseHelper = {};
 
-    const idDeferred = new Promise((resolve, reject) => { idPromiseHelper.resolve = resolve; });
-    const itemDeferred = new Promise((resolve, reject) => { itemPromiseHelper.resolve = resolve; });
+      const idDeferred = new Promise((resolve, reject) => { idPromiseHelper.resolve = resolve; });
+      const itemDeferred = new Promise((resolve, reject) => { itemPromiseHelper.resolve = resolve; });
 
-    spyOn(axios, 'get').and.returnValues(idDeferred, itemDeferred);
+      spyOn(axios, 'get').and.returnValues(idDeferred, itemDeferred);
 
-    const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
+      const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
 
-    itemFetcher.fetchItem();
+      itemFetcher.fetchItem();
 
-    expect(itemFetcher.status).toEqual('unstarted');
+      expect(itemFetcher.status).toEqual('unstarted');
 
-    idPromiseHelper.resolve({data: {id: '1'}});
+      idPromiseHelper.resolve({data: {id: '1'}});
 
-    setTimeout(() => {
-      expect(itemFetcher.status).toEqual('pending');
-      itemPromiseHelper.resolve({data: {id: '1', content: 'boom'}});
       setTimeout(() => {
-        expect(itemFetcher.status).toEqual('finished');
-        done();
+        expect(itemFetcher.status).toEqual('pending');
+        itemPromiseHelper.resolve({data: {id: '1', content: 'boom'}});
+        setTimeout(() => {
+          expect(itemFetcher.status).toEqual('finished');
+          done();
+        }, 0);
       }, 0);
-    }, 0);
+    });
   });
 });
