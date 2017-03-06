@@ -18,7 +18,7 @@ describe('Testing Promises', () => {
       const idDeferred = Q.defer();
       const itemDeferred = Q.defer();
 
-      spyOn(axios, 'get').and.returnValues(idDeferred.promise, itemDeferred.promise);
+      spyOn(axios, 'get').and.returnValues(idDeferred.promise);
 
       // invoke fetch id
       const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
@@ -34,6 +34,31 @@ describe('Testing Promises', () => {
       // assert that status is finished...
       // ...but this fails!
       expect(itemFetcher.status).toEqual('finished');
+    });
+
+    it('passes if you do understand how JS works', (done) => {
+      // stub out the api requests
+      const idDeferred = Q.defer();
+      const itemDeferred = Q.defer();
+
+      spyOn(axios, 'get').and.returnValues(idDeferred.promise);
+
+      // invoke fetch id
+      const itemFetcher = new ItemFetcher(fakeStatusNode, fakeContentNode);
+
+      itemFetcher.fetchId();
+
+      // assert that status is still unstarted before promise has resolved
+      expect(itemFetcher.status).toEqual('unstarted');
+
+      // resolve the promise
+      idDeferred.resolve({data: {id: '1'}});
+
+      _.defer(() => {
+        // assert that status is finished...
+        expect(itemFetcher.status).toEqual('finished');
+        done();
+      });
     });
   });
 
