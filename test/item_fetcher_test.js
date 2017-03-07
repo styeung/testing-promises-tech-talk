@@ -16,7 +16,6 @@ describe('Testing Promises', () => {
     xit('fails if you do not understand how JS works', () => {
       // stub out the api requests
       const idDeferred = Q.defer();
-      const itemDeferred = Q.defer();
 
       spyOn(axios, 'get').and.returnValues(idDeferred.promise);
 
@@ -39,7 +38,6 @@ describe('Testing Promises', () => {
     it('passes if you do understand how JS works', (done) => {
       // stub out the api requests
       const idDeferred = Q.defer();
-      const itemDeferred = Q.defer();
 
       spyOn(axios, 'get').and.returnValues(idDeferred.promise);
 
