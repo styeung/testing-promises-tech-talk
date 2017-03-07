@@ -3,7 +3,7 @@
 
 
 
-functionTwo() {
+function functionTwo() {
   // some code
 }
 
